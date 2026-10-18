@@ -10,7 +10,7 @@ Developed as the practical project for **Algorithms and Data Structures**, Biome
 
 ---
 
-## 📋 Table of contents
+## Table of contents
 
 - [Overview](#-overview)
 - [Features](#-features)
@@ -30,16 +30,20 @@ Each population is managed as an independent unit. The application works with **
 The project focuses on:
 
 - Modelling entities with Java classes, encapsulation and single-responsibility methods.
-- Choosing a suitable data structure to store, find and modify objects, and reasoning about the cost of those operations.
+- Choosing a suitable data structure to store (only arrays for the moment), find and modify objects, and reasoning about the cost of those operations.
 - Validating input and handling exceptional cases without ever leaving the data in an inconsistent state.
 - Keeping the **domain logic**, the **user interface** and the **persistence layer** separate.
 - Verifying behaviour with automated **JUnit** tests.
+- Using JavaDocs and genrate it
 
 ---
 
 ## Features
 
 The application provides a text menu:
+
+| Option | Action | Notes |
+|:---:|---|---|
 | `1` | **Open population** | Loads a population from a CSV file. If the file is invalid, the active population is kept untouched. |
 | `2` | **Create population** | Creates a new, empty population that becomes the active one. |
 | `3` | **Add mouse** | Rejects invalid data and reference codes already used in the population. |
