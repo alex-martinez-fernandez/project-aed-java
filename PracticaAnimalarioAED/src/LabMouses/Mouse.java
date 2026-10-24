@@ -5,20 +5,20 @@ public class Mouse {
     public static final double MIN_TEMPERATURE = 30.0;
     public static final double MAX_TEMPERATURE = 45.0;
 
-    private int mouseId ; //not final cause the task description says it can change
+    private String mouseId ; //not final cause the task description says it can change
     private final LocalDate birthDate;
-    private int weight;
+    private int weight;// in grams
     private Sex sex;// same as in mouseId
     private float temperature;
     private String observations;
     private Chromosome cr1;
     private Chromosome cr2;
 
-    public Mouse (mouseId, birthDate, weight, sex, temperature, observations, cr1, cr2){
-        validatemouseId();
-        validateBirthDate();
-        validateChromosomes();
-        validateWeight();
+    public Mouse (String mouseId, LocalDate birthDate, int weight, Sex sex, float temperature, String observations, Chromosome cr1, Chromosome cr2){
+        validatemouseId(mouseId);
+        validateBirthDate( birthDate);
+        validateChromosomes(sex, cr1, cr2);
+        validateWeight(weight);
 
         this.mouseId= mouseId;
         this.birthDate=birthDate;
@@ -31,29 +31,25 @@ public class Mouse {
     }
 
     boolean isSterile(){
-        return
+        return;
     }
     boolean isPolygamous(){
-        return
+        return;
     }
 
 
-    void setMouseId(String code) {
-        validatemouseId(code);
-        this.mouseId = code.trim();
+    void setMouseId() {
+        validatemouseId(mouseId);
+        this.mouseId = mouseId.trim();
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        validateBirthDate(birthDate);
-        this.birthDate = birthDate;
-    }
 
     public void setWeight(int weight) {
         validateWeight(weight);
         this.weight = weight;
     }
 
-    public void setTemperature(double temperature) {
+    public void setTemperature(float temperature) {
         validateTemperature(temperature);
         this.temperature = temperature;
     }

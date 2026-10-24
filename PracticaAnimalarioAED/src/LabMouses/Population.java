@@ -27,7 +27,7 @@ public class Population {
     void addMouse(Mouse mouse){
         if (numMouses== mice.length) {
             throw new ArrayIndexOutOfBoundsException("The maximum number of mouse in the lab is " + MAX_MOUSES +
-                    "you've surpassed the limit")
+                    "you've surpassed the limit");
         }else{
             mice[numMouses] = mouse;
             numMouses++;
