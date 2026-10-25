@@ -63,8 +63,13 @@ public class Mouse {
      * @return {@code true} if the mouse is sterile, {@code false} otherwise
      */
     boolean isSterile(){
-        if( )
-            return;
+        if(Sex sex == Sex.Male && Chromosome cr1.isMutated()){
+            return true;//What happends if Cr1 is not X but Y --> need to make sure
+        }if(Sex sex == Sex.Female && Chromosome cr1.isMutated() && Chromosome cr2.isMutated()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
