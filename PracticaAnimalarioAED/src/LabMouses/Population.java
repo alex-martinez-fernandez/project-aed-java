@@ -94,7 +94,13 @@ public class Population {
      *
      * @return array with the identifiers of the mice
      */
-    int[] getIds {return ;}
+    public static String[] getIds( Mouse [] mice){
+        String[] ids = new String[MAX_MOUSES];
+        for (int i=0; i<MAX_MOUSES; i++){
+            ids[i] = mice[i].getMouseId();
+        }
+        return ids;
+    }
 
     /**
      * Checks that a text is not {@code null} or blank.

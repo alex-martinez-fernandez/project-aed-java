@@ -86,7 +86,6 @@ public class Mouse {
             return false;
         }
     }
-
     void setMouseId() {
         validatemouseId(mouseId);
         this.mouseId = mouseId.trim();
@@ -104,6 +103,9 @@ public class Mouse {
 
     public void setObservations(String observations) {
         this.observations = (observations == null) ? "" : observations;
+    }
+    public String getMouseId() {
+        return mouseId;
     }
 
     /**
@@ -177,6 +179,11 @@ public class Mouse {
         if (firstX.getType() != ChromosomeType.X) {
             throw new IllegalArgumentException("The first chromosome has to be X");
         }
+        if (sex == sex.Male && second.getType() != ChromosomeType.Y) {
+            throw new IllegalArgumentException("The second chromosome for male has to be Y");
+        }
+        if (sex == sex.Female && second.getType() != ChromosomeType.X) {
+            throw new IllegalArgumentException("The second chromosome for female has to be X");
+        }
     }
-
 }
