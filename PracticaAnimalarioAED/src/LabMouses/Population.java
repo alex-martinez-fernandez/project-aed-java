@@ -84,6 +84,9 @@ public class Population {
      * @return the mouse at that position, or {@code null} if the position is empty
      */
     Mouse getMouse( int mouseId){
+        if (mice [mouseId] == null) {
+            throw new ArrayIndexOutOfBoundsException("No mouse with the id " + mouseId + " has been added to the lab.");
+        }
         return mice[mouseId];}
 
     /**
@@ -91,7 +94,7 @@ public class Population {
      *
      * @return array with the identifiers of the mice
      */
-    int[] getIds{return ;}
+    int[] getIds {return ;}
 
     /**
      * Checks that a text is not {@code null} or blank.

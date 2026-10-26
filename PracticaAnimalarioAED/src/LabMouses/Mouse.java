@@ -63,9 +63,9 @@ public class Mouse {
      * @return {@code true} if the mouse is sterile, {@code false} otherwise
      */
     boolean isSterile(){
-        if(Sex sex == Sex.Male && Chromosome cr1.isMutated()){
-            return true;//What happends if Cr1 is not X but Y --> need to make sure
-        }if(Sex sex == Sex.Female && Chromosome cr1.isMutated() && Chromosome cr2.isMutated()){
+        if( sex == Sex.Male && cr1.isMutated()){
+            return true;
+        }if(sex == Sex.Female && cr1.isMutated() && cr2.isMutated()){
             return true;
         }else{
             return false;
@@ -79,8 +79,12 @@ public class Mouse {
      * @return {@code true} if the mouse is polygamous, {@code false} otherwise
      */
     boolean isPolygamous(){
-        if()
-        return;
+
+        if(sex == sex.Male && cr2.isMutated()) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     void setMouseId() {
