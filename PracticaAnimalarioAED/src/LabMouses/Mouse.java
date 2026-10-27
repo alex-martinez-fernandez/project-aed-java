@@ -19,11 +19,11 @@ public class Mouse {
     private String mouseId ; //not final cause the task description says it can change
     private final LocalDate birthDate; //En formato AAAA-MM-DD
     private int weight;// in grams
-    private Sex sex;// same as in mouseId
+    private final Sex sex;// same as in mouseId
     private float temperature;
     private String observations;
-    private Chromosome cr1;
-    private Chromosome cr2;
+    private final Chromosome cr1;
+    private final Chromosome cr2;
 
     /**
      * Creates a mouse after validating its reference code, date of birth,
@@ -45,16 +45,17 @@ public class Mouse {
         validateChromosomes(sex, cr1, cr2);
         validateWeight(weight);
 
-        this.mouseId= mouseId;
+        this.mouseId= mouseId.trim();
         this.birthDate=birthDate;
         this.weight=weight;
         this.sex=sex;
         this.temperature=temperature;
-        this.observations=observations;
+        this.observations= (observations == null) ? "" : observations.trim();
         this.cr1=cr1;
         this.cr2=cr2;
     }
-
+//Add the vaalidation condition in observations so that --> when the object is instanciated also has the condition
+    //not only when is setted
     /**
      * Tells whether the mouse is sterile, based on its X chromosomes.
      *  A male is sterile if his only X chromosome is mutated.
@@ -63,14 +64,12 @@ public class Mouse {
      * @return {@code true} if the mouse is sterile, {@code false} otherwise
      */
     boolean isSterile(){
-        if( sex == Sex.Male && cr1.isMutated()){
-            return true;
-        }if(sex == Sex.Female && cr1.isMutated() && cr2.isMutated()){
-            return true;
-        }else{
-            return false;
+        if( sex == Sex.Male){
+            return cr1.isMutated();
         }
-    }
+        return cr1.isMutated() && cr2.isMutated();
+        }
+
 
     /**
      * Tells whether the mouse is polygamous. Only a male whose Y chromosome
@@ -79,14 +78,9 @@ public class Mouse {
      * @return {@code true} if the mouse is polygamous, {@code false} otherwise
      */
     boolean isPolygamous(){
-
-        if(sex == sex.Male && cr2.isMutated()) {
-            return true;
-        }else{
-            return false;
-        }
+        return sex == Sex.Male && cr2.isMutated();
     }
-    void setMouseId() {
+    void setMouseId(String mouseId) {
         validatemouseId(mouseId);
         this.mouseId = mouseId.trim();
     }
@@ -104,8 +98,36 @@ public class Mouse {
     public void setObservations(String observations) {
         this.observations = (observations == null) ? "" : observations;
     }
+    
     public String getMouseId() {
         return mouseId;
+    }
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+    public int getWeight() {
+        return weight;
+    }
+    public Sex getSex (){
+        return sex;
+    }
+    public float getTemperature() {
+        return temperature;
+    }
+    public String getObservations() {
+        return observations;
+    }
+    public Chromosome getCr1() {
+        return cr1;
+    }
+    public Chromosome getCr2() {
+        return cr2;
+    }
+
+    @Override
+    public String toString() {
+        return "Mouse " + mouseId + " (" + sex + ", sterile: " + isSterile()
+                + ", polygamous: " + isPolygamous() + ")";
     }
 
     /**
@@ -116,8 +138,8 @@ public class Mouse {
      */
     private static void validatemouseId(String mouseId) {
         if (mouseId == null || mouseId.isBlank()) {
-            throw new IllegalArgumentException("El código de referencia no puede estar vacío");
-        }
+            throw new IllegalArgumentException("The reference code can't be null or blank");
+        }//if we set another reference it has to be unique
     }
 
     /**
@@ -128,7 +150,7 @@ public class Mouse {
      */
     private static void validateBirthDate(LocalDate birthDate) {
         if (birthDate == null) {
-            throw new IllegalArgumentException("La fecha de nacimiento es obligatoria");
+            throw new IllegalArgumentException("The birthDate can't be null");
         }
     }
 
@@ -140,7 +162,7 @@ public class Mouse {
      */
     private static void validateWeight(int weight) {
         if (weight <= 0) {
-            throw new IllegalArgumentException("El peso debe ser un entero positivo (gramos)");
+            throw new IllegalArgumentException("The weight has to be a positive integer (in grams)");
         }
     }
 
@@ -152,8 +174,7 @@ public class Mouse {
      * @throws IllegalArgumentException if the temperature is not finite or is out of range
      */
     private static void validateTemperature(double temperature) {
-        if (!Double.isFinite(temperature)
-                || temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
+        if (temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
             throw new IllegalArgumentException(
                     "The temperature has to be between" + MIN_TEMPERATURE + " and " + MAX_TEMPERATURE + " ºC");
         }

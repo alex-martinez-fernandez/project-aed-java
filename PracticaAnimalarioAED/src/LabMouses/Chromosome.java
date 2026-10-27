@@ -44,3 +44,4 @@ public class Chromosome {
     public boolean isMutated() {
         return mutated;
     }
+}

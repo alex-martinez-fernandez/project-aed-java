@@ -101,6 +101,14 @@ public class Population {
         }
         return ids;
     }
+    //tried to make the validation of the string mouseId that if is changed it has to be unique
+    public static  Mouse[] getMousePopulation(Mouse [] mice){
+        Mouse[] population = new Mouse[MAX_MOUSES];
+        for (int i=0; i<MAX_MOUSES; i++){
+            population[i] = mice[i];
+        }
+        return population;
+    }
 
     /**
      * Checks that a text is not {@code null} or blank.
