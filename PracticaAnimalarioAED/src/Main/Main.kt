@@ -1,4 +1,0 @@
-package Main
-
-class Main {
-}

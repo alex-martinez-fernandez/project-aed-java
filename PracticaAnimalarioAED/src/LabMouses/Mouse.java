@@ -98,7 +98,7 @@ public class Mouse {
     public void setObservations(String observations) {
         this.observations = (observations == null) ? "" : observations;
     }
-    
+
     public String getMouseId() {
         return mouseId;
     }
