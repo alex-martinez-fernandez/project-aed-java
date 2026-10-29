@@ -91,6 +91,16 @@ public class Population {
     }
 
 
+
+
+    public void changeMouseId(String oldId, String newId){
+        Mouse mouse = getMouse(oldId);
+        if (newId != null && findMouse(newId) != -1 && !newId.trim().equals(mouse.getMouseId())) {
+            throw new IllegalArgumentException("There is already a mouse with the id " + newId);
+        }
+        mouse.setMouseId(newId);
+    }
+
     /**
      * Returns the identifiers of the mice in the population.
      *
