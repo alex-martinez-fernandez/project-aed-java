@@ -68,7 +68,7 @@ public class Population {
      */
     public void deleteMouse(String mouseId){
         int pos = findMouse(mouseId);
-        if (pos != -1){
+        if (pos == -1){
             throw new IllegalArgumentException("There is no mouses with this id in the lab");
         }
         mice[pos] = mice[numMouses-1];
@@ -82,9 +82,9 @@ public class Population {
      * @param mouseId position of the mouse in the array
      * @return the mouse at that position, or {@code null} if the position is empty
      */
-    Mouse getMouse( int mouseId){
+    Mouse getMouse( String mouseId){
         int pos = findMouse(mouseId);
-        if (pos != -1){
+        if (pos == -1){
             throw new IllegalArgumentException("There is no mouses with this id in the lab");
         }
         return mice[pos];
@@ -106,23 +106,23 @@ public class Population {
      *
      * @return array with the identifiers of the mice
      */
-    public static String[] getIds( Mouse [] mice){
-        String[] ids = new String[MAX_MOUSES];
-        for (int i=0; i<MAX_MOUSES; i++){
+    public String[] getIds( Mouse [] mice){
+        String[] ids = new String[numMouses];
+        for (int i=0; i<numMouses; i++){
             ids[i] = mice[i].getMouseId();
         }
         return ids;
     }
     //tried to make the validation of the string mouseId that if is changed it has to be unique
-    public static  Mouse[] getMousePopulation(Mouse [] mice){
-        Mouse[] population = new Mouse[MAX_MOUSES];
-        for (int i=0; i<MAX_MOUSES; i++){
+    public Mouse[] getMousePopulation(Mouse [] mice){
+        Mouse[] population = new Mouse[numMouses];
+        for (int i=0; i<numMouses; i++){
             population[i] = mice[i];
         }
         return population;
     }
 //busca un reton por su Id y devuelve en que posicion de array esta
-    private int findMouse(int mouseId){
+    private int findMouse(String mouseId){
         if (mouseId == null){
             return -1;
         }
@@ -161,4 +161,3 @@ public class Population {
     }
 
 }
-//aun se debe hacer el metodo para cambiar el mouseID
