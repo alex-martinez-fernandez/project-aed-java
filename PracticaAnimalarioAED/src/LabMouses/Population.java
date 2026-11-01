@@ -113,7 +113,8 @@ public class Population {
         }
         return ids;
     }
-    //tried to make the validation of the string mouseId that if is changed it has to be unique
+
+
     public Mouse[] getMousePopulation(Mouse [] mice){
         Mouse[] population = new Mouse[numMouses];
         for (int i=0; i<numMouses; i++){
@@ -121,7 +122,8 @@ public class Population {
         }
         return population;
     }
-//busca un reton por su Id y devuelve en que posicion de array esta
+
+
     private int findMouse(String mouseId){
         if (mouseId == null){
             return -1;
@@ -159,5 +161,4 @@ public class Population {
                     "The days in the lab should be between " + MIN_DAYS + " and " + MAX_DAYS);
         }
     }
-
 }

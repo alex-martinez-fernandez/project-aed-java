@@ -1,6 +1,5 @@
 package LabMouses;
 import java.time.LocalDate;
-
 /**
  * Laboratory mouse with its biological data and its pair of sex chromosomes.
  * Sterility and polygamy are not stored as attributes: they are derived from
@@ -44,6 +43,7 @@ public class Mouse {
         validateBirthDate( birthDate);
         validateChromosomes(sex, cr1, cr2);
         validateWeight(weight);
+        validateTemperature(temperature);
 
         this.mouseId= mouseId.trim();
         this.birthDate=birthDate;
