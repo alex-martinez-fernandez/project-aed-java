@@ -129,7 +129,7 @@ A sample file is included in [`data/`](data/).
 ## Author
 
 **Alex Martínez Fernández** — Biomedical Engineering student, Universidad San Pablo CEU
-GitHub: [@almart-16](https://github.com/almart-16)
+GitHub: [@alex-martinez-fernandez] (https://github.com/alex-martinez-fernandez)
 
 ---
 
