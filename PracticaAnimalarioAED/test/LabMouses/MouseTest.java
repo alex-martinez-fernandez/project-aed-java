@@ -259,7 +259,6 @@ class MouseTest {
         m.setObservations(null);
         assertEquals("", m.getObservations());
     }
-    
     //TOSTRING
 
     @Test
