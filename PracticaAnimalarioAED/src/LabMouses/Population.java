@@ -15,7 +15,7 @@ public class Population {
     private String name;
     private String responsible;
     private int daysInLab;
-    Mouse[] mice= new Mouse[MAX_MOUSES];
+    private Mouse[] mice= new Mouse[MAX_MOUSES];
     private int numMouses=0; //not static: each population counts its own mouse
 
 
@@ -106,7 +106,7 @@ public class Population {
      *
      * @return array with the identifiers of the mice
      */
-    public String[] getIds( Mouse [] mice){
+    public String[] getIds(){
         String[] ids = new String[numMouses];
         for (int i=0; i<numMouses; i++){
             ids[i] = mice[i].getMouseId();
@@ -115,7 +115,7 @@ public class Population {
     }
 
 
-    public Mouse[] getMousePopulation(Mouse [] mice){
+    public Mouse[] getMousePopulation(){
         Mouse[] population = new Mouse[numMouses];
         for (int i=0; i<numMouses; i++){
             population[i] = mice[i];

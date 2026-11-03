@@ -80,7 +80,7 @@ public class PopulationTest {
         population.addMouse(mouse("M1"));
 
         assertThrows(IllegalArgumentException.class, () -> population.addMouse(mouse("M1")));
-        assertEquals(1, population.getIds(population.mice).length);
+        assertEquals(1, population.getIds().length);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class PopulationTest {
         assertThrows(IllegalArgumentException.class, () -> population.getMouse("M1"));
         assertNotNull(population.getMouse("M2"));
         assertNotNull(population.getMouse("M3"));
-        assertEquals(2, population.getIds(population.mice).length);
+        assertEquals(2, population.getIds().length);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class PopulationTest {
         population.addMouse(mouse("M1"));
         population.deleteMouse("M1");
 
-        assertEquals(0, population.getIds(population.mice).length);
+        assertEquals(0, population.getIds().length);
     }
 
     @Test
@@ -190,8 +190,8 @@ public class PopulationTest {
     @Test
     @DisplayName("Una población vacía devuelve arrays vacios")
     void emptyPopulationReturnsEmptyArrays() {
-        assertEquals(0, population.getIds(population.mice).length);
-        assertEquals(0, population.getMousePopulation(population.mice).length);
+        assertEquals(0, population.getIds().length);
+        assertEquals(0, population.getMousePopulation().length);
     }
 
     @Test
@@ -200,7 +200,7 @@ public class PopulationTest {
         population.addMouse(mouse("M1"));
         population.addMouse(mouse("M2"));
 
-        assertArrayEquals(new String[]{"M1", "M2"}, population.getIds(population.mice));
+        assertArrayEquals(new String[]{"M1", "M2"}, population.getIds());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class PopulationTest {
         population.addMouse(m1);
         population.addMouse(m2);
 
-        Mouse[] result = population.getMousePopulation(population.mice);
+        Mouse[] result = population.getMousePopulation();
 
         assertEquals(2, result.length);
         assertSame(m1, result[0]);

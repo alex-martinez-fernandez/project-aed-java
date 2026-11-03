@@ -1,9 +1,5 @@
-package Main;
-import LabMouses.*;
+package LabMouses;
 
-import LabMouses.Population;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -109,7 +105,7 @@ public class Main {
             System.out.println("There is no active population.");
             return;
         }
-        String[] ids = population.getIds(population.mice);
+        String[] ids = population.getIds();
         if (ids.length == 0) {
             System.out.println("The population has no mice.");
         }
