@@ -33,7 +33,7 @@ public class Main {
                 System.out.println();
                 System.out.println("LAB MOUSES MENU");
                 System.out.println();
-                System.out.println("manage your mouse lab like a pro");
+                System.out.println("MANAGE YOUR MOUSES LIKE A PRO");
                 if (population == null) {
                     System.out.println("No active population");
                 } else {
@@ -108,7 +108,7 @@ public class Main {
     private static void listMice() {
         if (population == null) {
             System.out.println("There is no active population.");
-            return;
+            return;//sale del metodo
         }
         String[] ids = population.getIds();
         if (ids.length == 0) {
@@ -117,8 +117,6 @@ public class Main {
         for (String id : ids) {
             System.out.println(" - " + id);
         }
-
-
     }
     public static void deleteMouse() {
         if (population == null) {
@@ -141,6 +139,99 @@ public class Main {
     }
 
     private static void modifyMouse() {
+        if (population == null) {
+            System.out.println("There is no active population.");
+            return;
+        }
+        if (population.getIds().length == 0) {
+            System.out.println("The population has no mice.");
+            return;
+        }
+        System.out.print("Reference code of the mouse to modify: ");
+        String id = input.nextLine().trim();
+        Mouse mouse;
+        try {
+            mouse = population.getMouse(id);
+        } catch (IllegalArgumentException e) {
+            System.out.println("There is no mouse with the reference " + id + ".");
+            return;
+        }
+
+        int option;
+        do {
+            System.out.println();
+            System.out.println("Modifying " + mouse);
+            System.out.println("1. Reference code");
+            System.out.println("2. Weight");
+            System.out.println("3. Temperature");
+            System.out.println("4. Observations");
+            System.out.println("5. Birth date");
+            System.out.println("6. Sex and chromosomes");
+            System.out.println("0. Back");
+            option = readInt("Choose an option: ");
+
+            // Each new value is validated before the mouse is changed,
+            // so an invalid value never leaves the mouse in an incoherent state.
+            try {
+                switch (option) {
+                    case 0 -> System.out.println("Back to the main menu.");
+                    case 1 -> {
+                        System.out.print("New reference code: ");
+                        String newId = input.nextLine().trim();
+                        population.changeMouseId(mouse.getMouseId(), newId);
+                        System.out.println("Reference changed.");
+                    }
+                    case 2 -> {
+                        mouse.setWeight(readInt("New weight (g): "));
+                        System.out.println("Weight changed.");
+                    }
+                    case 3 -> {
+                        System.out.print("New temperature (ºC): ");
+                        mouse.setTemperature(Float.parseFloat(input.nextLine()));
+                        System.out.println("Temperature changed.");
+                    }
+                    case 4 -> {
+                        System.out.print("New observations: ");
+                        mouse.setObservations(input.nextLine());
+                        System.out.println("Observations changed.");
+                    }
+                    case 5 -> {
+                        // birthDate is final: a new mouse is created with the new date
+                        System.out.print("New birth date (YYYY-MM-DD): ");
+                        LocalDate newDate = LocalDate.parse(input.nextLine());
+                        Mouse newMouse = new Mouse(mouse.getMouseId(), newDate, mouse.getWeight(),
+                                mouse.getSex(), mouse.getTemperature(), mouse.getObservations(),
+                                mouse.getCr1(), mouse.getCr2());
+                        mouse = replaceMouse(mouse, newMouse);
+                        System.out.println("Birth date changed.");
+                    }
+                    case 6 -> {
+                        // sex and chromosomes are final: a new mouse is created.
+                        // The chromosomes are asked again so they match the new sex (XY or XX).
+                        System.out.print("New sex (M/F): ");
+                        Sex newSex = input.nextLine().equalsIgnoreCase("M") ? Sex.Male : Sex.Female;
+                        System.out.print("Is the first X mutated? (y/n): ");
+                        Chromosome cr1 = new Chromosome(ChromosomeType.X, input.nextLine().equalsIgnoreCase("y"));
+                        System.out.print("Is the second chromosome mutated? (y/n): ");
+                        ChromosomeType secondType = (newSex == Sex.Male) ? ChromosomeType.Y : ChromosomeType.X;
+                        Chromosome cr2 = new Chromosome(secondType, input.nextLine().equalsIgnoreCase("y"));
+                        Mouse newMouse = new Mouse(mouse.getMouseId(), mouse.getBirthDate(), mouse.getWeight(),
+                                newSex, mouse.getTemperature(), mouse.getObservations(), cr1, cr2);
+                        mouse = replaceMouse(mouse, newMouse);
+                        System.out.println("Sex and chromosomes changed.");
+                    }
+                    default -> System.out.println("Invalid option.");
+                }
+            } catch (Exception e) {
+                // wrong formats (number, date) and the validations of Mouse/Population
+                System.out.println("Change rejected: " + e.getMessage());
+            }
+        } while (option != 0);
+    }
+    private static Mouse replaceMouse(Mouse oldMouse, Mouse newMouse) {
+        population.deleteMouse(oldMouse.getMouseId());
+        population.addMouse(newMouse);
+        return newMouse;
     }
 
     private static void showMouse() {
@@ -179,7 +270,6 @@ public class Main {
     private static void saveAs() {
         System.out.println("Pending implementation.");
     }
-    
 
     private static int readInt(String message) {
         while (true) {
