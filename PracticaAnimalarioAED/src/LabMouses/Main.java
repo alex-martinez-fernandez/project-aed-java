@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         int option;
         do {
+            printmenu();
             option = readInt("Choose an option: ");
             switch (option) {
                 case 0 -> System.out.println("Goodbye!");
@@ -36,7 +37,7 @@ public class Main {
                 if (population == null) {
                     System.out.println("No active population");
                 } else {
-
+                    System.out.println("Active population: " + population.getIds().length + " mice");
                 }
 
                 System.out.println("0. Exit");
@@ -50,6 +51,10 @@ public class Main {
                 System.out.println("8. Save");
                 System.out.println("9. Save as");
             }
+
+    private static void openPopulation() {
+        System.out.println("Pending implementation.");
+    }
 
 
     private static void createPopulation() {
@@ -112,25 +117,70 @@ public class Main {
         for (String id : ids) {
             System.out.println(" - " + id);
         }
-    }
 
-    private static void deleteMouse() {
+
+    }
+    public static void deleteMouse() {
+        if (population == null) {
+            System.out.println("There is no active population.");
+            return;
+        }
+        if (population.getIds().length == 0) {
+            System.out.println("The population has no mice.");
+            return;
+        }
+        System.out.print("Reference code of the mouse to delete: ");
+        String id = input.nextLine().trim();
+        try {
+            population.deleteMouse(id);
+            System.out.println("Mouse " + id + " deleted.");
+        } catch (IllegalArgumentException e) {
+            // deleteMouse throws it when the id doesn't exist: nothing is changed
+            System.out.println("There is no mouse with the reference " + id + ".");
+        }
     }
 
     private static void modifyMouse() {
     }
 
     private static void showMouse() {
+        if (population == null) {
+            System.out.println("There is no active population.");
+            return;
+        }
+        if (population.getIds().length == 0) {
+            System.out.println("The population has no mice.");
+            return;
+        }
+        System.out.print("Reference code: ");
+        String id = input.nextLine().trim();
+        try {
+            Mouse m = population.getMouse(id);
+            System.out.println("Reference:    " + m.getMouseId());
+            System.out.println("Birth date:   " + m.getBirthDate());
+            System.out.println("Weight:       " + m.getWeight() + " g");
+            System.out.println("Sex:          " + m.getSex());
+            System.out.println("Temperature:  " + m.getTemperature() + " ºC");
+            System.out.println("Observations: " + m.getObservations());
+            System.out.println("Chromosome 1: " + m.getCr1().getType() + (m.getCr1().isMutated() ? " (mutated)" : " (not mutated)"));
+            System.out.println("Chromosome 2: " + m.getCr2().getType() + (m.getCr2().isMutated() ? " (mutated)" : " (not mutated)"));
+            System.out.println("Sterile:      " + (m.isSterile() ? "yes" : "no"));
+            System.out.println("Polygamous:   " + (m.isPolygamous() ? "yes" : "no"));
+        } catch (IllegalArgumentException e) {
+            // getMouse throws it when the id doesn't exist
+            System.out.println("There is no mouse with the reference " + id + ".");
+        }
     }
 
     private static void save() {
+        System.out.println("Pending implementation.");
     }
 
     private static void saveAs() {
+        System.out.println("Pending implementation.");
     }
-    private static void openPopulation() {
+    
 
-    }
     private static int readInt(String message) {
         while (true) {
             System.out.print(message);
