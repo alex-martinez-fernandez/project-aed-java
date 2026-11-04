@@ -3,6 +3,11 @@ package LabMouses;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * Console application to manage a population of laboratory mice.
+ * It shows a menu in a loop and runs the option chosen by the user until
+ * the user chooses to exit. There is at most one active population at a time.
+ */
 public class Main {
     private static Scanner input = new Scanner(System.in);
     private static Population population = null;
@@ -29,28 +34,28 @@ public class Main {
         } while (option != 0);
     }
 
-            private static void printmenu () {
-                System.out.println();
-                System.out.println("LAB MOUSES MENU");
-                System.out.println();
-                System.out.println("MANAGE YOUR MOUSES LIKE A PRO");
-                if (population == null) {
-                    System.out.println("No active population");
-                } else {
-                    System.out.println("Active population: " + population.getIds().length + " mice");
-                }
+    private static void printmenu () {
+        System.out.println();
+        System.out.println("LAB MOUSES MENU");
+        System.out.println();
+        System.out.println("MANAGE YOUR MOUSES LIKE A PRO");
+        if (population == null) {
+            System.out.println("No active population");
+        } else {
+            System.out.println("Active population: " + population.getIds().length + " mice");
+        }
 
-                System.out.println("0. Exit");
-                System.out.println("1. Open population");
-                System.out.println("2. Create population");
-                System.out.println("3. Add mouse");
-                System.out.println("4. List mice");
-                System.out.println("5. Delete mouse");
-                System.out.println("6. Modify mouse");
-                System.out.println("7. Show mouse");
-                System.out.println("8. Save");
-                System.out.println("9. Save as");
-            }
+        System.out.println("0. Exit");
+        System.out.println("1. Open population");
+        System.out.println("2. Create population");
+        System.out.println("3. Add mouse");
+        System.out.println("4. List mice");
+        System.out.println("5. Delete mouse");
+        System.out.println("6. Modify mouse");
+        System.out.println("7. Show mouse");
+        System.out.println("8. Save");
+        System.out.println("9. Save as");
+    }
 
     private static void openPopulation() {
         System.out.println("Pending implementation.");
@@ -70,6 +75,12 @@ public class Main {
             System.out.println("Error: " + e.getMessage());
         }
     }
+    /**
+     * Asks for the data and mutations of a mouse and adds it to the active
+     * population. The second chromosome is created as Y or X depending on the
+     * sex, so the user can't build an invalid configuration. If any value is
+     * invalid or the reference is already used, the mouse is not added.
+     */
     private static void addMouse() {
         if (population == null) {
             System.out.println("There is no active population.");
@@ -138,6 +149,14 @@ public class Main {
         }
     }
 
+    /**
+     * Asks for a reference code and opens a submenu to modify the data of that
+     * mouse: reference code, weight, temperature, observations, birth date, or
+     * sex and chromosomes. The submenu is shown until the user chooses 0.
+     * Every new value is validated before changing the mouse, so an invalid
+     * change is rejected and the mouse keeps its previous data. When the sex
+     * changes, the chromosomes are asked again so they match the new sex.
+     */
     private static void modifyMouse() {
         if (population == null) {
             System.out.println("There is no active population.");
@@ -228,6 +247,17 @@ public class Main {
             }
         } while (option != 0);
     }
+    /**
+     * Replaces a mouse of the active population with a new version of it.
+     * It is used to change final attributes (birth date, sex and chromosomes),
+     * which can't be changed in the existing object. The new mouse must be
+     * created (and therefore validated) before calling this method, so the
+     * old mouse is only deleted when the new one is valid.
+     *
+     * @param oldMouse mouse currently stored in the population
+     * @param newMouse new version of the mouse, with the same reference code
+     * @return the new mouse, so it can keep being modified
+     */
     private static Mouse replaceMouse(Mouse oldMouse, Mouse newMouse) {
         population.deleteMouse(oldMouse.getMouseId());
         population.addMouse(newMouse);

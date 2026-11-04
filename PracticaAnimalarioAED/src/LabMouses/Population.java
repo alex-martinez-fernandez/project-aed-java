@@ -1,6 +1,5 @@
 package LabMouses;
 
-
 /**
  * Population of laboratory mice, identified by a name, a person in charge and
  * the number of days it has spent in the lab.
@@ -15,6 +14,12 @@ public class Population {
     private String name;
     private String responsible;
     private int daysInLab;
+    /**
+     * Private so the array can only be changed through the methods of this
+     * class, which keep the population coherent: no null or repeated mice,
+     * at most {@link #MAX_MOUSES}, and {@code numMouses} always matching the
+     * mice stored.
+     */
     private Mouse[] mice= new Mouse[MAX_MOUSES];
     private int numMouses=0; //not static: each population counts its own mouse
 
@@ -41,7 +46,9 @@ public class Population {
      * Adds a mouse at the first free position of the population and prints
      * a confirmation message.
      *
-     * @param mouse mouse to add
+     * @param mouse mouse to add; must not be {@code null}
+     * @throws IllegalArgumentException       if the mouse is {@code null} or there is
+     *                                        already a mouse with the same reference code
      * @throws ArrayIndexOutOfBoundsException if the population already holds
      *                                        {@link #MAX_MOUSES} mice
      */
@@ -55,16 +62,17 @@ public class Population {
         }if (findMouse(mouse.getMouseId()) != -1){
             throw new IllegalArgumentException("The mouse with this id is already present in the lab");
         }
-            mice[numMouses] = mouse;
-            numMouses++;
-            System.out.println( mouse + " mouse has been added to the lab.");
+        mice[numMouses] = mouse;
+        numMouses++;
+        System.out.println( mouse + " mouse has been added to the lab.");
     }
 
     /**
-     * Removes a mouse from the population.
+     * Removes a mouse from the population. The last mouse of the array is moved
+     * to the freed position, so the order of the mice may change.
      *
-     * @param mouseId position of the mouse in the array
-     * @throws ArrayIndexOutOfBoundsException if the population has no mice
+     * @param mouseId reference code of the mouse to remove
+     * @throws IllegalArgumentException if there is no mouse with that reference code
      */
     public void deleteMouse(String mouseId){
         int pos = findMouse(mouseId);
@@ -74,13 +82,14 @@ public class Population {
         mice[pos] = mice[numMouses-1];
         mice[numMouses-1] = null;
         numMouses--;
-        }
+    }
 
     /**
-     * Returns the mouse stored at the given position.
+     * Returns the mouse with the given reference code.
      *
-     * @param mouseId position of the mouse in the array
-     * @return the mouse at that position, or {@code null} if the position is empty
+     * @param mouseId reference code of the mouse
+     * @return the mouse with that reference code
+     * @throws IllegalArgumentException if there is no mouse with that reference code
      */
     Mouse getMouse( String mouseId){
         int pos = findMouse(mouseId);
@@ -93,6 +102,17 @@ public class Population {
 
 
 
+    /**
+     * Changes the reference code of a mouse of the population, checking that
+     * the new code is not used by another mouse. Changing it to the same code
+     * it already has is allowed.
+     *
+     * @param oldId current reference code of the mouse
+     * @param newId new reference code; must not be {@code null} or blank
+     * @throws IllegalArgumentException if there is no mouse with {@code oldId},
+     *                                  if another mouse already uses {@code newId},
+     *                                  or if {@code newId} is {@code null} or blank
+     */
     public void changeMouseId(String oldId, String newId){
         Mouse mouse = getMouse(oldId);
         if (newId != null && findMouse(newId) != -1 && !newId.trim().equals(mouse.getMouseId())) {
@@ -102,9 +122,11 @@ public class Population {
     }
 
     /**
-     * Returns the identifiers of the mice in the population.
+     * Returns the reference codes of the mice in the population. The array is
+     * not received as a parameter because it is already an attribute of the class.
      *
-     * @return array with the identifiers of the mice
+     * @return a new array with the reference codes; its length is the number
+     *         of mice (empty if there are none)
      */
     public String[] getIds(){
         String[] ids = new String[numMouses];
@@ -115,6 +137,14 @@ public class Population {
     }
 
 
+    /**
+     * Returns the mice of the population, without the empty positions of the
+     * internal array. It is a copy, so mice can't be added or removed from
+     * outside the class.
+     *
+     * @return a new array with the mice; its length is the number of mice
+     *         (empty if there are none)
+     */
     public Mouse[] getMousePopulation(){
         Mouse[] population = new Mouse[numMouses];
         for (int i=0; i<numMouses; i++){
@@ -136,25 +166,12 @@ public class Population {
         return -1;
     }
 
-    /**
-     * Checks that a text is not {@code null} or blank.
-     *
-     * @param text  text to check
-     * @param field message used to build the error
-     * @throws IllegalArgumentException if the text is {@code null} or blank
-     */
     private static void validateText(String text, String field) {
         if (text == null || text.isBlank()) {
             throw new IllegalArgumentException(field + " cannot  be empty");
         }
     }
 
-    /**
-     * Checks that a number of days is between {@link #MIN_DAYS} and {@link #MAX_DAYS}.
-     *
-     * @param days number of days to check
-     * @throws IllegalArgumentException if it is out of range
-     */
     private static void validateDays(int days) {
         if (days < MIN_DAYS || days > MAX_DAYS) {
             throw new IllegalArgumentException(

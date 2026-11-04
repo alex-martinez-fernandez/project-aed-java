@@ -26,16 +26,18 @@ public class Mouse {
 
     /**
      * Creates a mouse after validating its reference code, date of birth,
-     * chromosomes and weight.
+     * sex and chromosomes, weight and temperature. The reference code and the
+     * observations are stored without leading or trailing spaces.
      *
      * @param mouseId      reference code; must not be {@code null} or blank
      * @param birthDate    date of birth; must not be {@code null}
      * @param weight       weight in grams; must be positive
      * @param sex          sex of the mouse; must not be {@code null}
-     * @param temperature  body temperature, in ºC
-     * @param observations free-text observations
+     * @param temperature  body temperature, in ºC; between {@link #MIN_TEMPERATURE}
+     *                     and {@link #MAX_TEMPERATURE}
+     * @param observations free-text observations; {@code null} is stored as an empty text
      * @param cr1          first sex chromosome; must be an X chromosome
-     * @param cr2          second sex chromosome
+     * @param cr2          second sex chromosome; Y for a male, X for a female
      * @throws IllegalArgumentException if any of the validated values is not valid
      */
     public Mouse (String mouseId, LocalDate birthDate, int weight, Sex sex, float temperature, String observations, Chromosome cr1, Chromosome cr2){
@@ -59,7 +61,7 @@ public class Mouse {
     /**
      * Tells whether the mouse is sterile, based on its X chromosomes.
      *  A male is sterile if his only X chromosome is mutated.
-     *  A female is sterile only if both of her X chromosomes are mutated.</li>
+     *  A female is sterile only if both of her X chromosomes are mutated.
      *
      * @return {@code true} if the mouse is sterile, {@code false} otherwise
      */
@@ -68,7 +70,7 @@ public class Mouse {
             return cr1.isMutated();
         }
         return cr1.isMutated() && cr2.isMutated();
-        }
+    }
 
 
     /**
@@ -80,6 +82,15 @@ public class Mouse {
     boolean isPolygamous(){
         return sex == Sex.Male && cr2.isMutated();
     }
+
+    /**
+     * Changes the reference code of the mouse. It is package-private because
+     * the uniqueness of the code inside the population can't be checked here:
+     * it has to be changed through {@link Population#changeMouseId(String, String)}.
+     *
+     * @param mouseId new reference code; must not be {@code null} or blank
+     * @throws IllegalArgumentException if the code is {@code null} or blank
+     */
     void setMouseId(String mouseId) {
         validatemouseId(mouseId);
         this.mouseId = mouseId.trim();
@@ -130,49 +141,24 @@ public class Mouse {
                 + ", polygamous: " + isPolygamous() + ")";
     }
 
-    /**
-     * Checks that a reference code is not {@code null} or blank.
-     *
-     * @param mouseId reference code to check
-     * @throws IllegalArgumentException if the code is {@code null} or blank
-     */
     private static void validatemouseId(String mouseId) {
         if (mouseId == null || mouseId.isBlank()) {
             throw new IllegalArgumentException("The reference code can't be null or blank");
         }//if we set another reference it has to be unique
     }
 
-    /**
-     * Checks that a date of birth is not {@code null}.
-     *
-     * @param birthDate date of birth to check
-     * @throws IllegalArgumentException if the date is {@code null}
-     */
     private static void validateBirthDate(LocalDate birthDate) {
         if (birthDate == null) {
             throw new IllegalArgumentException("The birthDate can't be null");
         }
     }
 
-    /**
-     * Checks that a weight is a positive integer.
-     *
-     * @param weight weight in grams
-     * @throws IllegalArgumentException if the weight is zero or negative
-     */
     private static void validateWeight(int weight) {
         if (weight <= 0) {
             throw new IllegalArgumentException("The weight has to be a positive integer (in grams)");
         }
     }
 
-    /**
-     * Checks that a temperature is finite and between {@link #MIN_TEMPERATURE}
-     * and {@link #MAX_TEMPERATURE}.
-     *
-     * @param temperature temperature in ºC
-     * @throws IllegalArgumentException if the temperature is not finite or is out of range
-     */
     private static void validateTemperature(double temperature) {
         if (temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
             throw new IllegalArgumentException(
@@ -182,13 +168,14 @@ public class Mouse {
 
     /**
      * Checks the sex and the chromosomes of a mouse: the sex and both chromosomes
-     * must not be {@code null}, and the first chromosome must be an X chromosome.
+     * must not be {@code null}, the first chromosome must be an X chromosome, and
+     * the second one must be Y for a male and X for a female.
      *
      * @param sex    sex of the mouse
      * @param firstX first chromosome
      * @param second second chromosome
-     * @throws IllegalArgumentException if the sex or a chromosome is missing,
-     *                                  or if the first chromosome is not X
+     * @throws IllegalArgumentException if the sex or a chromosome is missing, or
+     *                                  if the chromosomes don't match the sex
      */
     private static void validateChromosomes(Sex sex, Chromosome firstX, Chromosome second) {
         if (sex == null) {
