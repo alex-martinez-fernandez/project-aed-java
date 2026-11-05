@@ -1,5 +1,5 @@
 package FileManager;
-import LabMouses.*
+import LabMouses.*;
 
 public class OutputKeyboard {
 

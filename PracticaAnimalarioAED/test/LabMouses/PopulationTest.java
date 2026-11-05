@@ -86,7 +86,7 @@ public class PopulationTest {
     @Test
     @DisplayName("Se pueden añadir MAX_MOUSES ratones, pero no uno mas")
     void cannotExceedMaxMice() {
-        for (int i = 0; i < Population.MAX_MOUSES; i++) {
+        for (int i = 0; i < Population.MAX_MOUSES ; i++) {
             population.addMouse(mouse("M" + i));
         }
 
