@@ -30,18 +30,18 @@ public class InputFile {
             System.out.println("No existe: " + raiz.getAbsolutePath());
             return;
         }
-        long bytes = listar(raiz, 0);
-        System.out.println("Total: " + bytes + " bytes");
+        float kiloBytes = listar(raiz, 0);
+        System.out.println("Total: " + kiloBytes + " kiloBytes");
     }
 
-    public static long listar(File f, int nivel) {
+    public static float listar(File f, int nivel) {
         String sangria = " ".repeat(nivel);
         if (f.isFile()) {
-            int size =  (int) f.length();
+            long size =  f.length();
             float level = (float) size /1000;
 
             System.out.println(sangria + f.getName() + " (" + level + " KB)");
-            return f.length();
+            return level;
         }
         System.out.println(sangria + "[" + f.getName() + "]");
         long total = 0;
