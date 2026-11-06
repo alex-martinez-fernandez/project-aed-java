@@ -165,7 +165,7 @@ public class Population {
         }
         return -1;
     }
-    
+
     private static void validateText(String text, String field) {
         if (text == null || text.isBlank()) {
             throw new IllegalArgumentException(field + " cannot  be empty");
