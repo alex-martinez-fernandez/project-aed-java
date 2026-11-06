@@ -154,35 +154,18 @@ public class Population {
         return population;
     }
 
-    //BUENO BONITO Y BARATO implementacion unicamente por motivos de aprendizaje
-    private int findMouse(String mouseId) {
-        if (mouseId == null || mouseId.isBlank()) {
+    private int findMouse(String mouseId){
+        if (mouseId == null){
             return -1;
         }
-        mouseId = mouseId.trim();
-
-        // Sentinel: a mouse with the searched code, after the last real mouse
-        mice[numMouses] = new Mouse(mouseId, LocalDate.now(), 1, Sex.Male, 37.0f, "",
-                new Chromosome(ChromosomeType.X, false), new Chromosome(ChromosomeType.Y, false));
-
-        int i = 0;
-        while (!mice[i].getMouseId().equals(mouseId)) {
-            i++;
+        for (int i=0; i<numMouses; i++){
+            if(mice[i].getMouseId().equals(mouseId)){
+                return i;
+            }
         }
-
-        mice[numMouses] = null; // remove the sentinel
-
-        if (i == numMouses) {
-            return -1; // only the sentinel was found
-        }
-        return i;
+        return -1;
     }
-    // SEARCH ALGORITHMS STUDIED
-// Sequential search (previous version): 5*n operations -> O(n)
-// Sequential search with sentinel: the searched value is added at the end -> 3*n operations -> O(n) (the one used)
-// Binary search: O(log(n)), but the mice must be sorted. Since we can't ensure that,
-// we use the sequential search with sentinel.
-
+    
     private static void validateText(String text, String field) {
         if (text == null || text.isBlank()) {
             throw new IllegalArgumentException(field + " cannot  be empty");
