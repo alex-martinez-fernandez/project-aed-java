@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream; //lee bytes de un fichero.
 import java.io.FileOutputStream; //escribe bytes en un fichero.
 import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 
 public class InputKeyboard {
 
@@ -33,7 +35,8 @@ public class InputKeyboard {
             int n;
             while ((n = in.read(buffer)) != -1) {
                 llamadas++;
-                out.write(buffer, 0, n); // ¡solo los n bytes leídos!
+                out.write(buffer, 0, n); // ¡solo los n bytes leídos!  // no out.write(buffer)
+                //--> la ultima lectura nunca llena el array entero: meteriamos basura
             }
         }
     }
