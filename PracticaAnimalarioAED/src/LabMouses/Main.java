@@ -1,15 +1,17 @@
 package LabMouses;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.time.LocalDate;
-import java.util.Scanner;
 
-/**
- * Console application to manage a population of laboratory mice.
- * It shows a menu in a loop and runs the option chosen by the user until
- * the user chooses to exit. There is at most one active population at a time.
- */
+
 public class Main {
-    private static Scanner input = new Scanner(System.in);
+    //implementation buffered reader in the program
+
+    private static final BufferedReader input =
+            new BufferedReader(new InputStreamReader(System.in));
     private static Population population = null;
 
 
@@ -63,10 +65,8 @@ public class Main {
 
 
     private static void createPopulation() {
-        System.out.print("Name: ");
-        String name = input.nextLine();
-        System.out.print("Person in charge: ");
-        String responsible = input.nextLine();
+        String name = readLine("Name: ");
+        String responsible = readLine("Person in charge: ");
         int days = readInt("Days in the lab: ");
         try {
             population = new Population(name, responsible, days);
@@ -87,27 +87,21 @@ public class Main {
             return;
         }
         try {
-            System.out.print("Reference code: ");
-            String id = input.nextLine();
-            System.out.print("Birth date (YYYY-MM-DD): ");
-            LocalDate birthDate = LocalDate.parse(input.nextLine());
+            String id = readLine("Reference code: ");
+            LocalDate birthDate = LocalDate.parse(readLine("Birth date (YYYY-MM-DD): "));
 
             int weight = readInt("Weight (g): ");
-            System.out.print("Temperature (ºC): ");
 
-            float temperature = Float.parseFloat(input.nextLine());
-            System.out.print("Observations: ");
-            String observations = input.nextLine();
-            System.out.print("Sex (M/F): ");
-            Sex sex = input.nextLine().equalsIgnoreCase("M") ? Sex.Male : Sex.Female;
+            float temperature = Float.parseFloat(readLine("Temperature (ºC): "));
+            String observations = readLine("Observations: ");
+            Sex sex = readLine("Sex (M/F): ").equalsIgnoreCase("M") ? Sex.Male : Sex.Female;
 
-            System.out.print("Is the first X mutated? (y/n): ");
-            Chromosome cr1 = new Chromosome(ChromosomeType.X, input.nextLine().equalsIgnoreCase("y"));
+            Chromosome cr1 = new Chromosome(ChromosomeType.X,
+                    readLine("Is the first X mutated? (y/n): ").equalsIgnoreCase("y"));
 
-            System.out.print("Is the second chromosome mutated? (y/n): ");
             ChromosomeType secondType = (sex == Sex.Male) ? ChromosomeType.Y : ChromosomeType.X;
-
-            Chromosome cr2 = new Chromosome(secondType, input.nextLine().equalsIgnoreCase("y"));
+            Chromosome cr2 = new Chromosome(secondType,
+                    readLine("Is the second chromosome mutated? (y/n): ").equalsIgnoreCase("y"));
 
             Mouse mouse = new Mouse(id, birthDate, weight, sex, temperature, observations, cr1, cr2);
             population.addMouse(mouse);
@@ -138,8 +132,7 @@ public class Main {
             System.out.println("The population has no mice.");
             return;
         }
-        System.out.print("Reference code of the mouse to delete: ");
-        String id = input.nextLine().trim();
+        String id = readLine("Reference code of the mouse to delete: ").trim();
         try {
             population.deleteMouse(id);
             System.out.println("Mouse " + id + " deleted.");
@@ -166,8 +159,7 @@ public class Main {
             System.out.println("The population has no mice.");
             return;
         }
-        System.out.print("Reference code of the mouse to modify: ");
-        String id = input.nextLine().trim();
+        String id = readLine("Reference code of the mouse to modify: ").trim();
         Mouse mouse;
         try {
             mouse = population.getMouse(id);
@@ -195,8 +187,7 @@ public class Main {
                 switch (option) {
                     case 0 -> System.out.println("Back to the main menu.");
                     case 1 -> {
-                        System.out.print("New reference code: ");
-                        String newId = input.nextLine().trim();
+                        String newId = readLine("New reference code: ").trim();
                         population.changeMouseId(mouse.getMouseId(), newId);
                         System.out.println("Reference changed.");
                     }
@@ -205,19 +196,16 @@ public class Main {
                         System.out.println("Weight changed.");
                     }
                     case 3 -> {
-                        System.out.print("New temperature (ºC): ");
-                        mouse.setTemperature(Float.parseFloat(input.nextLine()));
+                        mouse.setTemperature(Float.parseFloat(readLine("New temperature (ºC): ")));
                         System.out.println("Temperature changed.");
                     }
                     case 4 -> {
-                        System.out.print("New observations: ");
-                        mouse.setObservations(input.nextLine());
+                        mouse.setObservations(readLine("New observations: "));
                         System.out.println("Observations changed.");
                     }
                     case 5 -> {
                         // birthDate is final: a new mouse is created with the new date
-                        System.out.print("New birth date (YYYY-MM-DD): ");
-                        LocalDate newDate = LocalDate.parse(input.nextLine());
+                        LocalDate newDate = LocalDate.parse(readLine("New birth date (YYYY-MM-DD): "));
                         Mouse newMouse = new Mouse(mouse.getMouseId(), newDate, mouse.getWeight(),
                                 mouse.getSex(), mouse.getTemperature(), mouse.getObservations(),
                                 mouse.getCr1(), mouse.getCr2());
@@ -227,13 +215,12 @@ public class Main {
                     case 6 -> {
                         // sex and chromosomes are final: a new mouse is created.
                         // The chromosomes are asked again so they match the new sex (XY or XX).
-                        System.out.print("New sex (M/F): ");
-                        Sex newSex = input.nextLine().equalsIgnoreCase("M") ? Sex.Male : Sex.Female;
-                        System.out.print("Is the first X mutated? (y/n): ");
-                        Chromosome cr1 = new Chromosome(ChromosomeType.X, input.nextLine().equalsIgnoreCase("y"));
-                        System.out.print("Is the second chromosome mutated? (y/n): ");
+                        Sex newSex = readLine("New sex (M/F): ").equalsIgnoreCase("M") ? Sex.Male : Sex.Female;
+                        Chromosome cr1 = new Chromosome(ChromosomeType.X,
+                                readLine("Is the first X mutated? (y/n): ").equalsIgnoreCase("y"));
                         ChromosomeType secondType = (newSex == Sex.Male) ? ChromosomeType.Y : ChromosomeType.X;
-                        Chromosome cr2 = new Chromosome(secondType, input.nextLine().equalsIgnoreCase("y"));
+                        Chromosome cr2 = new Chromosome(secondType,
+                                readLine("Is the second chromosome mutated? (y/n): ").equalsIgnoreCase("y"));
                         Mouse newMouse = new Mouse(mouse.getMouseId(), mouse.getBirthDate(), mouse.getWeight(),
                                 newSex, mouse.getTemperature(), mouse.getObservations(), cr1, cr2);
                         mouse = replaceMouse(mouse, newMouse);
@@ -273,8 +260,7 @@ public class Main {
             System.out.println("The population has no mice.");
             return;
         }
-        System.out.print("Reference code: ");
-        String id = input.nextLine().trim();
+        String id = readLine("Reference code: ").trim();
         try {
             Mouse m = population.getMouse(id);
             System.out.println("Reference:    " + m.getMouseId());
@@ -301,11 +287,34 @@ public class Main {
         System.out.println("Pending implementation.");
     }
 
+    /**
+     * Shows a message and reads one line from the console.
+     * BufferedReader.readLine() throws a checked IOException and returns null
+     * at the end of the input (Ctrl+D / Ctrl+Z), so both cases are handled here
+     * once, instead of in every method that reads from the keyboard.
+     *
+     * @param message text shown before reading
+     * @return the line typed by the user, without the line break
+     */
+    private static String readLine(String message) {
+        System.out.print(message);
+        try {
+            String line = input.readLine();
+            if (line == null) {               // end of input: no more lines will come
+                System.out.println();
+                System.out.println("End of input. Goodbye!");
+                System.exit(0);
+            }
+            return line;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     private static int readInt(String message) {
         while (true) {
-            System.out.print(message);
             try {
-                return Integer.parseInt(input.nextLine().trim());
+                return Integer.parseInt(readLine(message).trim());
             } catch (NumberFormatException e) {
                 System.out.println("Please enter an integer number.");
             }
