@@ -1,17 +1,12 @@
 package LabMouses;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.time.LocalDate;
+import java.util.Scanner;
 
 
 public class Main {
-    //implementation buffered reader in the program
 
-    private static final BufferedReader input =
-            new BufferedReader(new InputStreamReader(System.in));
+    private static final Scanner input = new Scanner(System.in);
     private static Population population = null;
 
 
@@ -92,8 +87,10 @@ public class Main {
 
             int weight = readInt("Weight (g): ");
 
-            float temperature = Float.parseFloat(readLine("Temperature (ºC): "));
+            float temperature = Float.parseFloat(readLine("Temperature (ºC): ")); // when you compute a bad
+            // temperature the program doesn't stops
             String observations = readLine("Observations: ");
+
             Sex sex = readLine("Sex (M/F): ").equalsIgnoreCase("M") ? Sex.Male : Sex.Female;
 
             Chromosome cr1 = new Chromosome(ChromosomeType.X,
@@ -288,27 +285,23 @@ public class Main {
     }
 
     /**
-     * Shows a message and reads one line from the console.
-     * BufferedReader.readLine() throws a checked IOException and returns null
-     * at the end of the input (Ctrl+D / Ctrl+Z), so both cases are handled here
-     * once, instead of in every method that reads from the keyboard.
+     * Shows a message and reads one whole line from the console.
+     * Always using nextLine() (never nextInt()) avoids the classic Scanner
+     * problem of a leftover line break. hasNextLine() returns false at the
+     * end of the input (Ctrl+D / Ctrl+Z); without this check nextLine()
+     * would throw NoSuchElementException.
      *
      * @param message text shown before reading
      * @return the line typed by the user, without the line break
      */
     private static String readLine(String message) {
         System.out.print(message);
-        try {
-            String line = input.readLine();
-            if (line == null) {               // end of input: no more lines will come
-                System.out.println();
-                System.out.println("End of input. Goodbye!");
-                System.exit(0);
-            }
-            return line;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        if (!input.hasNextLine()) {           // end of input: no more lines will come
+            System.out.println();
+            System.out.println("End of input. Goodbye!");
+            System.exit(0);
         }
+        return input.nextLine();
     }
 
     private static int readInt(String message) {
