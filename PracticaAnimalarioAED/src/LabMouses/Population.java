@@ -1,5 +1,4 @@
 package LabMouses;
-import java.time.LocalDate;
 
 /**
  * Population of laboratory mice, identified by a name, a person in charge and
