@@ -99,6 +99,18 @@ public class Population {
         return mice[pos];
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getResponsible() {
+        return responsible;
+    }
+
+    public int getDaysInLab() {
+        return daysInLab;
+    }
+
 
 
 
@@ -176,5 +188,8 @@ public class Population {
             throw new IllegalArgumentException(
                     "The days in the lab should be between " + MIN_DAYS + " and " + MAX_DAYS);
         }
+    }
+
+    public String getResponsible() {
     }
 }
