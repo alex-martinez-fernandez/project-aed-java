@@ -189,7 +189,4 @@ public class Population {
                     "The days in the lab should be between " + MIN_DAYS + " and " + MAX_DAYS);
         }
     }
-
-    public String getResponsible() {
-    }
 }
