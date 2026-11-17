@@ -36,6 +36,7 @@ public class OutputFile {
             }
         }
     }
+
     private static String populationToCSV(Population p) {
         return p.getName() + DELIMITER + p.getResponsible() + DELIMITER + p.getDaysInLab();
     }
@@ -57,7 +58,5 @@ public class OutputFile {
                     + "\" can't contain '" + DELIMITER + "': it is the delimiter of the file");
         }
     }
-
-
-
 }
+
